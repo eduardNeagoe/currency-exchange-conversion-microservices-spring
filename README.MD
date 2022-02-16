@@ -11,6 +11,11 @@
 - Lombok
 - Mapstruct
 
+## Note: There are no automated tests. 
+The purpose of the app is to demonstrate the use of the tech stack described above;
+To ease manual testing, I included an export for Postman [here](./spring-cloud-microservices-poc.postman_collection.json).
+Before you start testing the requests you must start the microservices in the order mentioned below.
+
 ## Start-up order:
 1. Naming Server
 2. Spring Cloud Config Server
