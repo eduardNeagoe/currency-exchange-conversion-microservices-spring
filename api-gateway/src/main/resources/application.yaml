@@ -1,0 +1,22 @@
+spring:
+  config:
+    import: 'optional:configserver:'
+  application:
+    name: api-gateway
+# useful for enabling requests like http://localhost:8765/currency-exchange/exchange/from/USD/to/EUR
+# that is targeting the currency exchange service through the gateway using client discovery instead of redirecting/re-routing
+#  cloud:
+#    gateway:
+#      #enables discovery client
+#      discovery:
+#        locator:
+#          enabled: 'true'
+#          lowerCaseServiceId: true
+
+server:
+  port: '8765'
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
