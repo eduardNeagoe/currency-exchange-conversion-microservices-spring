@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 //@FeignClient(name = "currency-exchange", url = "localhost:8000") // no load balancing, it directly references the instance using host:port
-@FeignClient(name = "currency-exchange") // with load balancing through Eureka (notice no host:port is referenced directly)
+@FeignClient(name = "currency-exchange")
+// with load balancing through Eureka (notice no host:port is referenced directly)
 public interface CurrencyExchangeProxy {
 
     @GetMapping("/exchange/from/{srcCcy}/to/{destCcy}")

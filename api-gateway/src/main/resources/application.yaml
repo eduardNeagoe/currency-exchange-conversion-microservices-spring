@@ -1,6 +1,6 @@
 spring:
   config:
-    import: 'optional:configserver:'
+    import: 'optional:configserver:http://localhost:8888'
   application:
     name: api-gateway
 # useful for enabling requests like http://localhost:8765/currency-exchange/exchange/from/USD/to/EUR
