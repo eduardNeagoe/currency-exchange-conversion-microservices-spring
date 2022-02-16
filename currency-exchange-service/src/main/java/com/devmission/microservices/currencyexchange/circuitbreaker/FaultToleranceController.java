@@ -42,6 +42,7 @@ public class FaultToleranceController {
         return callFailingEndpoint();
     }
 
+    @GetMapping("sample-api-rate-limiter")
     // limits the number of calls in a time window
     // any extra calls above the limit will fail
     @RateLimiter(name = "sample-api-rate-limiter")
@@ -50,6 +51,7 @@ public class FaultToleranceController {
         return "Sample API Rate Limiter";
     }
 
+    @GetMapping("sample-api-bulkhead")
     // The bulkhead implementation in Hystrix/Resilience4j limits the number of concurrent calls to a component to avoid overloading it and therefore slowing it down/making it fail.
     // This way, the number of resources (typically threads) that is waiting for a reply from the component is limited.
     // at most X request-handling threads can hang when calling this method/microservice, while the others are free to handle requests to other services
@@ -61,7 +63,7 @@ public class FaultToleranceController {
     }
 
     // must have a Throwable parameter
-    public String getHardcodedResponse(Exception ex){
+    public String getHardcodedResponse(Exception ex) {
         return "Fallback response";
     }
 }
