@@ -48,6 +48,7 @@ Before you start testing the requests you must start the microservices in the or
 ![cloud-config-server](./cloud-config-server.png)
 ![Naming Server](./naming-server.png)
 ![load-balancer](./load-balancer.png)
+![distributed-tracing-server](./distributed-tracing-server.png)
 
 
 ##Ports

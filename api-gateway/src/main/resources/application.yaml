@@ -3,6 +3,12 @@ spring:
     import: 'optional:configserver:http://localhost:8888'
   application:
     name: api-gateway
+
+
+  # trace 100% of the requests
+  sleuth:
+    sampler:
+    probability: 1.0
 # useful for enabling requests like http://localhost:8765/currency-exchange/exchange/from/USD/to/EUR
 # that is targeting the currency exchange service through the gateway using client discovery instead of redirecting/re-routing
 #  cloud:
