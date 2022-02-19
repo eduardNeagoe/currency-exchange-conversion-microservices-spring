@@ -84,6 +84,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>eduardn08/microservices-poc-${project.artifactId}:${project.version}</name>
+                    </image>
+                    <!--pull images from the docker registry only if they are not present locally-->
+                    <pullPolicy>IF_NOT_PRESENT</pullPolicy>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -55,6 +55,7 @@
             <artifactId>spring-cloud-sleuth-zipkin</artifactId>
         </dependency>
 
+<!--    middleman between the service and the tracing server (zipkin)-->
         <dependency>
             <groupId>org.springframework.amqp</groupId>
             <artifactId>spring-rabbit</artifactId>
@@ -111,6 +112,11 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <image>
+                        <name>eduardn08/microservices-poc-${project.artifactId}:${project.version}</name>
+                    </image>
+                    <!--pull images from the docker registry only if they are not present locally-->
+                    <pullPolicy>IF_NOT_PRESENT</pullPolicy>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

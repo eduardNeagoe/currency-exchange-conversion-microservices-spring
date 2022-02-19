@@ -51,6 +51,5 @@ Before you start testing the requests you must start the microservices in the or
 ![distributed-tracing-server](./distributed-tracing-server.png)
 
 
-##Ports
+## Ports
 ![load-balancer](./ports.png)
-
