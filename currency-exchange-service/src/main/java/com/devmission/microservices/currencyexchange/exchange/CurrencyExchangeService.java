@@ -3,9 +3,11 @@ package com.devmission.microservices.currencyexchange.exchange;
 
 import com.devmission.microservices.currencyexchange.exchange.exceptions.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @AllArgsConstructor
 public class CurrencyExchangeService {
@@ -18,6 +20,7 @@ public class CurrencyExchangeService {
     public CurrencyExchangeDTO getExchange(String srcCcy, String destCcy) {
         String port = environment.getProperty("local.server.port");
 
+        log.info("Method getExchange called with source {} and destination {}", srcCcy, destCcy);
         return currencyExchangeRepository.findBySrcCcyAndDestCcy(srcCcy, destCcy).map(currencyExchange -> {
                     currencyExchange.setEnvironment(port);
                     return currencyExchange;

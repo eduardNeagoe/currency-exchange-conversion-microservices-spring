@@ -1,0 +1,110 @@
+version: '3.7'
+
+networks:
+  currency-network:
+
+services:
+  naming-server:
+    image: eduardn08/microservices-poc-naming-server:0.0.1-SNAPSHOT
+    ports:
+      - "8761:8761"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - currency-network
+
+  currency-exchange:
+    image: eduardn08/microservices-poc-currency-exchange-service:0.0.1-SNAPSHOT
+    ports:
+      - "8000:8000"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+      - rabbitmq
+    # because the localhost of a container is different from the one on your browser/machine
+    # replaced "localhost" with the name of the servers defined in this file
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://distributed-tracing-server:9411
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+
+  currency-conversion:
+    image: eduardn08/microservices-poc-currency-conversion-service:0.0.1-SNAPSHOT
+    ports:
+      - "8100:8100"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+      - rabbitmq
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://distributed-tracing-server:9411
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+
+  api-gateway:
+    image: eduardn08/microservices-poc-api-gateway:0.0.1-SNAPSHOT
+    ports:
+      - "8765:8765"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+      - rabbitmq
+    environment:
+      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://distributed-tracing-server:9411
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+
+  # zipkin tracing server
+  distributed-tracing-server:
+    image: openzipkin/zipkin:2.23
+    ports:
+      - "9411:9411"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+        - currency-network
+    environment:
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - rabbitmq
+    # restart if there is a problem starting up
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3.8.12-management
+    ports:
+      # communication port
+      - "5672:5672"
+      # rabbitmq management port
+      - "15672:15672"
+    deploy:
+      resources:
+        limits:
+          memory: 300m
+    networks:
+      - currency-network

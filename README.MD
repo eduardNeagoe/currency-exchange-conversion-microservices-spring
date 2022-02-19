@@ -6,20 +6,19 @@
 - Spring Cloud Config Server for reading configuration profiles stored remotely in a git repository
 - Spring Cloud Gateway for routing incoming requests to the appropriate services
 - Resilience4j for mechanisms like retry, circuit breaker, rate limiter, bulkhead 
+- Docker for single-step deployment
 - Spring Data JPA
 - H2 Database
 - Lombok
 - Mapstruct
 
-## Note: There are no automated tests. 
-The purpose of the app is to demonstrate the use of the tech stack described above;
-To ease manual testing, I included an export for Postman [here](./spring-cloud-microservices-poc.postman_collection.json).
-Before you start testing the requests you must start the microservices in the order mentioned below.
+## Purpose
+The purpose of this app is to demonstrate the use of the tech stack described above. It's focused on the
+technical infrastructure rather than business logic. Therefore, there are no automated tests, but it can be tested manually.  
+I included an export for Postman [here](./spring-cloud-microservices-poc.postman_collection.json).
 
-## Start-up order:
-1. Naming Server
-2. Spring Cloud Config Server
-3. Any
+## Start-up:
+Run ``docker-compose up``
 
 ### Naming Server - Eureka
 - http://localhost:8761/
@@ -48,8 +47,8 @@ Before you start testing the requests you must start the microservices in the or
 ![cloud-config-server](./cloud-config-server.png)
 ![Naming Server](./naming-server.png)
 ![load-balancer](./load-balancer.png)
+![distributed-tracing-server](./distributed-tracing-server.png)
 
 
-##Ports
+## Ports
 ![load-balancer](./ports.png)
-

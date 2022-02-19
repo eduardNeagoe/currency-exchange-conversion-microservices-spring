@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ApiGatewayConfig {
+public class ApiGatewayConfiguration {
 
 
     // instead of providing urls like http://localhost:8765/currency-exchange/exchange/from/USD/to/EUR
