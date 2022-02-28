@@ -20,7 +20,9 @@ technical infrastructure rather than business logic. Therefore, there are no aut
 I included an export for Postman [here](./spring-cloud-microservices-poc.postman_collection.json).
 
 ## Start-up:
-1. Run ``docker-compose up`` to start the application.
+1. Run `docker-compose up` to start the application. 
+
+All the docker images you need wil be pulled from my personal docker registry https://hub.docker.com/u/eduardn08. If you encounter any problems pulling the images, then run `mvn spring-boot:build-image` for every module (microservice) of the app to build the images locally. Then run `docker-compose up`.
 
 ### Naming Server - Eureka
 - http://localhost:8761/
