@@ -54,3 +54,5 @@ I included an export for Postman [here](./spring-cloud-microservices-poc.postman
 
 ## Ports
 ![load-balancer](./ports.png)
+
+RabbitMQ management port: 15672
