@@ -14,6 +14,9 @@ services:
           memory: 700m
     networks:
       - currency-network
+#    environment:
+#      EUREKA.INSTANCE.HOSTNAME: naming-server
+#      eureka.client.serviceUrl.defaultZone: http://naming-server:8761/eureka
 
   currency-exchange:
     image: eduardn08/microservices-poc-currency-exchange-service:0.0.1-SNAPSHOT
@@ -31,7 +34,7 @@ services:
     # because the localhost of a container is different from the one on your browser/machine
     # replaced "localhost" with the name of the servers defined in this file
     environment:
-      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      eureka.client.serviceUrl.defaultZone: http://naming-server:8761/eureka
       SPRING.ZIPKIN.BASEURL: http://distributed-tracing-server:9411
       RABBIT_URI: amqp://guest:guest@rabbitmq:5672
       SPRING_RABBITMQ_HOST: rabbitmq
@@ -51,7 +54,7 @@ services:
       - naming-server
       - rabbitmq
     environment:
-      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      eureka.client.serviceUrl.defaultZone: http://naming-server:8761/eureka
       SPRING.ZIPKIN.BASEURL: http://distributed-tracing-server:9411
       RABBIT_URI: amqp://guest:guest@rabbitmq:5672
       SPRING_RABBITMQ_HOST: rabbitmq
@@ -71,11 +74,57 @@ services:
       - naming-server
       - rabbitmq
     environment:
-      EUREKA.CLIENT.SERVICEURL.DEFAULTZONE: http://naming-server:8761/eureka
+      eureka.client.serviceUrl.defaultZone: http://naming-server:8761/eureka
       SPRING.ZIPKIN.BASEURL: http://distributed-tracing-server:9411
       RABBIT_URI: amqp://guest:guest@rabbitmq:5672
       SPRING_RABBITMQ_HOST: rabbitmq
       SPRING_ZIPKIN_SENDER_TYPE: rabbit
+
+  spring-cloud-config-server:
+    image: eduardn08/microservices-poc-spring-cloud-config-server:0.0.1-SNAPSHOT
+    ports:
+      - "8888:8888"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+      - rabbitmq
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://naming-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://distributed-tracing-server:9411
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+      # repository
+      SPRING.CLOUD.CONFIG.SERVER.GIT.URI: https://github.com/eduardNeagoe/spring-cloud-microservices-poc.git
+      # path under the repository
+      SPRING.CLOUD.CONFIG.SERVER.GIT.SEARCHPATHS: limits-service-config
+
+  limits-service:
+    image: eduardn08/microservices-poc-limits-service:0.0.1-SNAPSHOT
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - currency-network
+    depends_on:
+      - naming-server
+      - rabbitmq
+      - spring-cloud-config-server
+    environment:
+      eureka.client.serviceUrl.defaultZone: http://naming-server:8761/eureka
+      SPRING.ZIPKIN.BASEURL: http://distributed-tracing-server:9411
+      RABBIT_URI: amqp://guest:guest@rabbitmq:5672
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_ZIPKIN_SENDER_TYPE: rabbit
+      SPRING.CONFIG.IMPORT: optional:configserver:http://spring-cloud-config-server:8888
 
   # zipkin tracing server
   distributed-tracing-server:

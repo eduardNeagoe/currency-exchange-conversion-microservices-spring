@@ -2,15 +2,17 @@
 
 ### Detailed tech stack:
 - Spring Cloud Netflix Eureka Server/Client for service discovery and for balancing the load among the service instances
-- Spring Cloud OpenFeign for inter-service communication and load balancing - between the currency and exchange services
+- Spring Cloud OpenFeign (open-source successor of Netflix Feign) for inter-service communication and load balancing - between the currency and exchange services
 - Spring Cloud Config Server for reading configuration profiles stored remotely in a git repository
 - Spring Cloud Gateway for routing incoming requests to the appropriate services
-- Resilience4j for mechanisms like retry, circuit breaker, rate limiter, bulkhead 
+- Resilience4j (inspired by Netflix Hystrix) for mechanisms like retry, circuit breaker, rate limiter, bulkhead 
+- Zipkin as the implementation of the distributed tracing server for debugging requests among different microservices
+- RabbitMQ as a buffer between the distributed tracing server and the other microservices for preventing message loss in case the distributed tracing server is down
 - Docker for single-step deployment
-- Spring Data JPA
-- H2 Database
-- Lombok
-- Mapstruct
+- Spring Data JPA for interacting with data
+- H2 Database for in-memory database
+- Lombok for logging and for eliminating boilerplate POJO coding
+- Mapstruct for mapping entities to DTOs and vice-versa
 
 ## Purpose
 The purpose of this app is to demonstrate the use of the tech stack described above. It's focused on the
@@ -18,7 +20,7 @@ technical infrastructure rather than business logic. Therefore, there are no aut
 I included an export for Postman [here](./spring-cloud-microservices-poc.postman_collection.json).
 
 ## Start-up:
-Run ``docker-compose up``
+1. Run ``docker-compose up`` to start the application.
 
 ### Naming Server - Eureka
 - http://localhost:8761/
