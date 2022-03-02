@@ -8,7 +8,7 @@
 - Resilience4j (inspired by Netflix Hystrix) for mechanisms like retry, circuit breaker, rate limiter, bulkhead 
 - Zipkin as the implementation of the distributed tracing server for debugging requests among different microservices
 - RabbitMQ as a buffer between the distributed tracing server and the other microservices for preventing message loss in case the distributed tracing server is down
-- Docker for single-step deployment
+- Docker for containerization and docker-compose for single step deployment
 - Spring Data JPA for interacting with data
 - H2 Database for in-memory database
 - Lombok for logging and for eliminating boilerplate POJO coding
@@ -19,7 +19,7 @@ The purpose of this app is to demonstrate the use of the tech stack described ab
 technical infrastructure rather than business logic. Therefore, there are no automated tests, but it can be tested manually.  
 I included an export for Postman [here](./spring-cloud-microservices-poc.postman_collection.json).
 
-## Start-up:
+## Deployment:
 1. Run `docker-compose up` to start the application. 
 
 All the docker images you need wil be pulled from my personal docker registry https://hub.docker.com/u/eduardn08. If you encounter any problems pulling the images, then run `mvn spring-boot:build-image -DskipTests` for every module (microservice) of the app to build the images locally. Then run `docker-compose up`.
